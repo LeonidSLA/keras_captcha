@@ -66,8 +66,11 @@ def load_data(tol_num,train_num,folder):
     # output,(X_train,y_train):trainging data
     # ouput,(X_test,y_test):test data
  
-    data = np.empty((tol_num, 1, height, width),dtype="float32")
+    data = np.empty((tol_num, height, width,3),dtype="float32")
     label = np.empty((tol_num,Y_LEN),dtype="uint8")
+    texts = np.empty([tol_num,1], dtype="<U10")
+    
+    
 
     # data dir
     imgs = os.listdir(folder)
@@ -78,24 +81,27 @@ def load_data(tol_num,train_num,folder):
 
         arr = np.asarray(img,dtype="float32")
         #print(arr.shape)
-        data[i,:,:,:] = arr
-        captcha_text = imgs[i].split('.')[0]
         
+        captcha_text = imgs[i].split('.')[0]
+        #print(captcha_text,captcha_text.shape)
         if len(captcha_text)!=5:
             continue
-        
+        data[i,:,:,:] = arr
         label[i]= text2vec(captcha_text)
-        
+        texts[i]= captcha_text
 
     # the data, shuffled and split between train and test sets
     rr = [i for i in range(tol_num)] 
     random.shuffle(rr)
     X_train = data[rr][:train_num]
     y_train = label[rr][:train_num]
+    y_train_text=texts[rr][:train_num]
+    
     X_test = data[rr][train_num:]
     y_test = label[rr][train_num:]
+    y_test_text=texts[rr][train_num:]
     
-    return (X_train,y_train),(X_test,y_test)
+    return (X_train,y_train,y_train_text),(X_test,y_test,y_test_text)
 
 def get_image_from_file(path_img):
     img = Image.open(path_img)
@@ -113,7 +119,7 @@ def load_image(img):
 
 
 def pre_process_image(img):
-    img = img.convert('L')
+    #img = img.convert('L')
     # Resize it.
     img = img.resize((width, height), Image.BILINEAR)
 
@@ -135,7 +141,7 @@ def get_x_input_from_file(img):
 def get_x_input_from_image(img):
     X_test = load_image(img)
 
-    X_test = X_test.reshape(X_test.shape[0], height, width, 1)
+    X_test = X_test.reshape(X_test.shape[0], height, width, 3)
 
     X_test = X_test.astype('float32')
     X_test /= 255
