@@ -50,7 +50,7 @@ def text2vec(text):
     for i, m in enumerate(text):
         #print(m)
         #print(CHAR_SET.index)
-        idx = i * CHAR_SET_LEN + CHAR_SET.index(m.lower())
+        idx = i * CHAR_SET_LEN + CHAR_SET.index(m.upper())
         vector[idx] = 1
     return vector
 

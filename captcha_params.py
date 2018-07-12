@@ -9,7 +9,7 @@ HEIGHT=150
 
 
 def get_char_set():
-	return number+alphabet
+	return number+ALPHABET
 
 def get_char_set_len():
 	return len(get_char_set())
