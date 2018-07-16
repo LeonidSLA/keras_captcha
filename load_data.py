@@ -66,7 +66,8 @@ def load_data(tol_num,train_num,folder):
     # output,(X_train,y_train):trainging data
     # ouput,(X_test,y_test):test data
  
-    data = np.empty((tol_num, height, width,3),dtype="float32")
+    data = np.empty((tol_num, height, width#,3
+                    ),dtype="float32")
     label = np.empty((tol_num,Y_LEN),dtype="uint8")
     texts = np.empty([tol_num,1], dtype="<U10")
     
@@ -86,7 +87,8 @@ def load_data(tol_num,train_num,folder):
         #print(captcha_text,captcha_text.shape)
         if len(captcha_text)!=5:
             continue
-        data[i,:,:,:] = arr
+        data[i,:,:#,:
+            ] = arr
         label[i]= text2vec(captcha_text)
         texts[i]= captcha_text
 
@@ -119,7 +121,7 @@ def load_image(img):
 
 
 def pre_process_image(img):
-    #img = img.convert('L')
+    img = img.convert('L')
     # Resize it.
     img = img.resize((width, height), Image.BILINEAR)
 
