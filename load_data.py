@@ -103,7 +103,7 @@ def load_data(tol_num,train_num,folder):
     y_test = label[rr][train_num:]
     y_test_text=texts[rr][train_num:]
     
-    return (X_train,y_train,y_train_text),(X_test,y_test,y_test_text)
+    return (X_train.reshape(X_train.shape[0], height, width,1) , y_train,y_train_text),(X_test.reshape(X_test.shape[0], height, width,1),y_test,y_test_text)
 
 def get_image_from_file(path_img):
     img = Image.open(path_img)
