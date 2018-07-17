@@ -103,12 +103,33 @@ def load_data(tol_num,train_num,folder):
     y_test = label[rr][train_num:]
     y_test_text=texts[rr][train_num:]
     
+    #Normalize data to -0.5 to 0.5
     X_train = X_train.astype('float32')
     X_test = X_test.astype('float32')
     X_train =(X_train/255)-0.5
     X_test =(X_test/255)-0.5
     
-    return (X_train.reshape(X_train.shape[0], height, width,1) , y_train,y_train_text),(X_test.reshape(X_test.shape[0], height, width,1),y_test,y_test_text)
+    
+    # Split y on list of 5 arrays (one for each captcha symbol)
+
+    y_train=y_train.reshape(y_train.shape[0],MAX_CAPTCHA,CHAR_SET_LEN)
+    y_test=y_test.reshape(y_test.shape[0],MAX_CAPTCHA,CHAR_SET_LEN)
+
+    y_train_lst=[y_train[:,0,] ,
+           y_train[:,1,] , 
+           y_train[:,2,] ,
+           y_train[:,3,] ,
+           y_train[:,4,]  
+          ]
+
+    y_test_lst=[y_test[:,0,] ,
+           y_test[:,1,] , 
+           y_test[:,2,] ,
+           y_test[:,3,] ,
+           y_test[:,4,]  
+          ]
+    
+    return (X_train.reshape(X_train.shape[0], height, width,1) , y_train_lst,y_train_text),(X_test.reshape(X_test.shape[0], height, width,1),y_test_lst,y_test_text)
 
 def get_image_from_file(path_img):
     img = Image.open(path_img)
